@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIP NETWORK — Elite Forex Trading</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E8000D;
+    --red-dark: #9B0009;
+    --red-glow: #FF1A24;
+    --black: #050505;
+    --black2: #0D0D0D;
+    --black3: #141414;
+    --white: #F5F0EB;
+    --gray: #888;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* TICKER */
+  .ticker {
+    background: var(--red);
+    padding: 8px 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .ticker-inner {
+    display: flex;
+    gap: 60px;
+    animation: ticker 20s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker span {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #000;
+    font-weight: bold;
+  }
+  .ticker span.up::before { content: '▲ '; }
+  .ticker span.down::before { content: '▼ '; }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    border-bottom: 1px solid #1a1a1a;
+    position: relative;
+  }
+  .logo {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .logo span { color: var(--red); }
+  .nav-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 60px 60px;
+    overflow: hidden;
+  }
+
+  /* GRID BACKGROUND */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,0,13,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,0,13,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  /* LARGE BG TEXT */
+  .hero-bg-text {
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(200px, 25vw, 380px);
+    color: rgba(232,0,13,0.04);
+    letter-spacing: -10px;
+    pointer-events: none;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .hero-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 6px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-label::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--red);
+    display: inline-block;
+  }
+
+  h1 {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(72px, 10vw, 140px);
+    line-height: 0.9;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+    animation: fadeUp 0.8s 0.1s ease both;
+    position: relative;
+    z-index: 1;
+  }
+  h1 .line-red { color: var(--red); display: block; }
+  h1 .line-stroke {
+    -webkit-text-stroke: 1px var(--white);
+    color: transparent;
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--gray);
+    max-width: 480px;
+    margin-top: 28px;
+    line-height: 1.6;
+    font-weight: 400;
+    letter-spacing: 1px;
+    animation: fadeUp 0.8s 0.2s ease both;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-cta {
+    margin-top: 48px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.3s ease both;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-primary {
+    background: var(--red);
+    color: #000;
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 16px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 18px 40px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+  .btn-primary:hover {
+    background: var(--red-glow);
+    transform: translateY(-2px);
+    box-shadow: 0 0 40px rgba(232,0,13,0.5);
+  }
+
+  .btn-secondary {
+    border: 1px solid #333;
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 18px 36px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover {
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  /* DISCORD ICON */
+  .discord-icon {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid #1a1a1a;
+    border-bottom: 1px solid #1a1a1a;
+    margin: 0 60px;
+  }
+  .stat {
+    padding: 36px 40px;
+    border-right: 1px solid #1a1a1a;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .stat:last-child { border-right: none; }
+  .stat:hover { background: rgba(232,0,13,0.04); }
+  .stat-num {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 52px;
+    color: var(--white);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .stat-num span { color: var(--red); }
+  .stat-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  /* WHAT YOU GET */
+  .section {
+    padding: 100px 60px;
+  }
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--red);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--red);
+  }
+  .section-title {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(40px, 6vw, 80px);
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    line-height: 0.95;
+    margin-bottom: 60px;
+  }
+  .section-title span { color: var(--red); }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: #1a1a1a;
+    border: 1px solid #1a1a1a;
+  }
+  .feature {
+    background: var(--black2);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .feature::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--red);
+    transition: width 0.4s ease;
+  }
+  .feature:hover::before { width: 100%; }
+  .feature:hover { background: #111; }
+
+  .feature-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--red);
+    letter-spacing: 3px;
+    margin-bottom: 24px;
+    opacity: 0.7;
+  }
+  .feature-title {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 26px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    line-height: 1.1;
+  }
+  .feature-desc {
+    font-size: 15px;
+    color: var(--gray);
+    line-height: 1.7;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+
+  /* SIGNAL PREVIEW */
+  .signal-section {
+    padding: 80px 60px;
+    background: var(--black2);
+    position: relative;
+    overflow: hidden;
+  }
+  .signal-section::after {
+    content: 'SIGNAL';
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 180px;
+    color: rgba(255,255,255,0.015);
+    pointer-events: none;
+    letter-spacing: -5px;
+  }
+  .signal-card {
+    background: var(--black3);
+    border: 1px solid #222;
+    border-left: 3px solid var(--red);
+    padding: 28px 32px;
+    max-width: 420px;
+    font-family: 'Share Tech Mono', monospace;
+    position: relative;
+    z-index: 1;
+  }
+  .signal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .signal-pair {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+  .signal-type {
+    background: var(--red);
+    color: #000;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 4px 12px;
+    font-weight: bold;
+  }
+  .signal-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #1a1a1a;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .signal-row:last-child { border-bottom: none; }
+  .signal-row .label { color: var(--gray); }
+  .signal-row .val { color: var(--white); }
+  .signal-row .val.green { color: #00E676; }
+  .signal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #00E676;
+    margin-top: 16px;
+  }
+  .signal-badge::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00E676;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .signal-content-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .signal-text h2 {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(36px, 5vw, 64px);
+    text-transform: uppercase;
+    line-height: 0.95;
+    margin-bottom: 20px;
+  }
+  .signal-text h2 span { color: var(--red); }
+  .signal-text p {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    color: var(--gray);
+    line-height: 1.7;
+    max-width: 400px;
+  }
+
+  /* JOIN SECTION */
+  .join-section {
+    padding: 120px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .join-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(232,0,13,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .join-section h2 {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(52px, 8vw, 110px);
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .join-section h2 span { color: var(--red); }
+  .join-section p {
+    font-size: 18px;
+    color: var(--gray);
+    margin-bottom: 48px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+  }
+  .join-btns {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid #1a1a1a;
+    padding: 32px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer .logo { font-size: 20px; }
+  footer p {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: #444;
+    letter-spacing: 2px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    nav, .hero, .stats-bar, .section, .signal-section, .join-section, footer { padding-left: 24px; padding-right: 24px; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); margin: 0; }
+    .features-grid { grid-template-columns: 1fr; }
+    .signal-content-area { grid-template-columns: 1fr; }
+    .hero-bg-text { display: none; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="up">EUR/USD 1.0842 +0.12%</span>
+    <span class="down">GBP/USD 1.2634 -0.08%</span>
+    <span class="up">USD/JPY 149.32 +0.21%</span>
+    <span class="down">AUD/USD 0.6521 -0.15%</span>
+    <span class="up">USD/CAD 1.3587 +0.09%</span>
+    <span class="up">NZD/USD 0.5943 +0.06%</span>
+    <span class="down">USD/CHF 0.8812 -0.11%</span>
+    <span class="up">EUR/GBP 0.8578 +0.04%</span>
+    <!-- duplicate for seamless loop -->
+    <span class="up">EUR/USD 1.0842 +0.12%</span>
+    <span class="down">GBP/USD 1.2634 -0.08%</span>
+    <span class="up">USD/JPY 149.32 +0.21%</span>
+    <span class="down">AUD/USD 0.6521 -0.15%</span>
+    <span class="up">USD/CAD 1.3587 +0.09%</span>
+    <span class="up">NZD/USD 0.5943 +0.06%</span>
+    <span class="down">USD/CHF 0.8812 -0.11%</span>
+    <span class="up">EUR/GBP 0.8578 +0.04%</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">PIP<span>.</span>NETWORK</a>
+  <span class="nav-tag">// ELITE FOREX COMMUNITY</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-text">PIPS</div>
+  <p class="hero-label">ESTABLISHED — PROFESSIONAL FOREX</p>
+  <h1>
+    <span class="line-stroke">TRADE</span>
+    <span class="line-red">SMARTER.</span>
+    <span>WIN MORE.</span>
+  </h1>
+  <p class="hero-sub">
+    High-conviction forex signals, real-time analysis, and a community of serious traders. No noise. No BS. Just pips.
+  </p>
+  <div class="hero-cta">
+    <a href="https://discord.gg/b8urv2qJ" class="btn-primary">
+      <svg class="discord-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.032.054a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+      </svg>
+      JOIN DISCORD
+    </a>
+    <a href="https://t.me/pipipnetwork" class="btn-secondary">
+      📡 TELEGRAM CHANNEL
+    </a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num">4<span>K+</span></div>
+    <div class="stat-label">Active Traders</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">87<span>%</span></div>
+    <div class="stat-label">Win Rate (30D)</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">12<span>+</span></div>
+    <div class="stat-label">Pairs Covered</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">24<span>/7</span></div>
+    <div class="stat-label">Live Coverage</div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="section">
+  <p class="section-label">What You Get</p>
+  <h2 class="section-title">BUILT FOR<br><span>WINNERS.</span></h2>
+  <div class="features-grid">
+    <div class="feature">
+      <div class="feature-num">01 //</div>
+      <div class="feature-title">Precision Forex Signals</div>
+      <p class="feature-desc">Entry, take profit, and stop loss levels delivered before the move. No lagging indicators — only forward-looking setups.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">02 //</div>
+      <div class="feature-title">Live Market Sessions</div>
+      <p class="feature-desc">London & NY open breakdowns, real-time commentary, and trade management as markets move. Be in the room where it happens.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">03 //</div>
+      <div class="feature-title">Risk Management</div>
+      <p class="feature-desc">Every signal comes with calculated lot sizes and risk parameters. We protect your capital as hard as we grow it.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">04 //</div>
+      <div class="feature-title">Educational Content</div>
+      <p class="feature-desc">From ICT concepts to SMC and price action — our archive turns beginners into consistently profitable traders.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">05 //</div>
+      <div class="feature-title">Discord War Room</div>
+      <p class="feature-desc">Private channels, voice calls during key sessions, and a community of traders who are serious about their craft.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-num">06 //</div>
+      <div class="feature-title">Telegram Alerts</div>
+      <p class="feature-desc">Instant signal alerts pushed to the Pip Network Telegram channel so you never miss a setup — wherever you are.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNAL PREVIEW -->
+<section class="signal-section">
+  <div class="signal-content-area">
+    <div class="signal-text">
+      <p class="section-label">Signal Preview</p>
+      <h2>REAL TRADES.<br><span>REAL RESULTS.</span></h2>
+      <p>Every signal is structured, risk-defined, and delivered with context. This is what our members receive every day.</p>
+    </div>
+    <div>
+      <div class="signal-card">
+        <div class="signal-header">
+          <span class="signal-pair">GBP/USD</span>
+          <span class="signal-type">BUY</span>
+        </div>
+        <div class="signal-row">
+          <span class="label">ENTRY</span>
+          <span class="val">1.2618</span>
+        </div>
+        <div class="signal-row">
+          <span class="label">STOP LOSS</span>
+          <span class="val">1.2580</span>
+        </div>
+        <div class="signal-row">
+          <span class="label">TP 1</span>
+          <span class="val green">1.2660 ✓</span>
+        </div>
+        <div class="signal-row">
+          <span class="label">TP 2</span>
+          <span class="val green">1.2710 ✓</span>
+        </div>
+        <div class="signal-row">
+          <span class="label">R:R RATIO</span>
+          <span class="val">1 : 3.4</span>
+        </div>
+        <div class="signal-row">
+          <span class="label">SESSION</span>
+          <span class="val">London Open</span>
+        </div>
+        <div class="signal-badge">● CLOSED IN PROFIT — +68 PIPS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOIN -->
+<section class="join-section">
+  <h2>STOP<br><span>WATCHING.</span><br>START WINNING.</h2>
+  <p>Join the Pip Network community — free on Discord.</p>
+  <div class="join-btns">
+    <a href="https://discord.gg/b8urv2qJ" class="btn-primary">
+      <svg class="discord-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.032.054a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+      </svg>
+      JOIN FOR FREE
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a class="logo" href="#">PIP<span>.</span>NETWORK</a>
+  <p>© 2026 PIP NETWORK — FOREX TRADING COMMUNITY</p>
+  <p>NOT FINANCIAL ADVICE</p>
+</footer>
+
+</body>
+</html>
